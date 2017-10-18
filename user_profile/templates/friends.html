@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Friends</h1>
+
+<div>
+    {% for friend in friends %}
+        {% include "_friend.html" with friend=friend %}
+    {% endfor %}
+</div>
+{% endblock %}

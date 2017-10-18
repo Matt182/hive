@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from . import views
 
-urlpatterns = {
-    url(r'([0-9]+)/$', views.index),
-}
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'members/$', views.members, name='members'),
+    url(r'friends/$', views.friends, name='friends'),
+]

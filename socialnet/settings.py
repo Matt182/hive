@@ -70,6 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'socialnet.wsgi.application'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
