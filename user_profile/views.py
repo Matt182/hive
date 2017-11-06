@@ -2,11 +2,11 @@ import json
 
 from django.forms import model_to_dict
 from django.shortcuts import get_object_or_404, render
-from .models import User
+from .models import Profile
 
 
 def handle_s(request, id):
-    user = model_to_dict(get_object_or_404(User, pk=id))
+    user = model_to_dict(get_object_or_404(Profile, pk=id))
     request.session['user'] = json.dumps(user)
 
 
@@ -23,7 +23,7 @@ def index(request):
 
 def friends(request):
     user = get_current_user(request)
-    user_friends = User.objects.get(pk=user['id']).friends
+    user_friends = Profile.objects.get(pk=user['id']).friends
     return render(request, 'friends.html', {
         'user': user,
         'friends': user_friends,
@@ -32,7 +32,7 @@ def friends(request):
 
 def members(request):
     user = get_current_user(request)
-    members = User.objects.all()
+    members = Profile.objects.all()
     return render(request, 'members.html', {
         'user': user,
         'members': members

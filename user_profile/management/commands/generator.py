@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from faker import Faker
 
-from user_profile.models import User
+from user_profile.models import Profile
 
 
 class Command(BaseCommand):
@@ -30,8 +30,8 @@ class Command(BaseCommand):
 def generate():
     faker = Faker()
     for i in range(5):
-        User.objects.create(id=i, name=faker.name(), email=faker.email(), password=faker.first_name())
+        Profile.objects.create(id=i, name=faker.name(), email=faker.email(), password=faker.first_name())
 
 
 def clear():
-    User.objects.all().delete()
+    Profile.objects.all().delete()
