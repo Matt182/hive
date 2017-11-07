@@ -1,17 +1,11 @@
 import json
 
-from django.forms import model_to_dict
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from .models import Profile
 
 
-def handle_s(request, id):
-    user = model_to_dict(get_object_or_404(Profile, pk=id))
-    request.session['user'] = json.dumps(user)
-
-
 def get_current_user(request):
-    return json.loads(request.session['user'])
+    return request.user
 
 
 def index(request):

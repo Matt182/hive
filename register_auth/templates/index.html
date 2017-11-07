@@ -2,11 +2,16 @@
 
 {% block content %}
 
-<form action="{% url 'login' %}" method="get">
-    <input type="text" name="email">
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="username">
     <input type="password" name="password">
     <input type="submit" value="Log in">
 </form>
 <a href="{% url 'register' %}">Registration</a>
+
+{% if err %}
+{{ err }}
+{% endif %}
 
 {% endblock %}

@@ -1,6 +1,7 @@
 import json
 
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login as login_user
+from django.shortcuts import render, redirect
 
 
 def index(request):
@@ -8,8 +9,13 @@ def index(request):
 
 
 def login(request):
-    print(request.GET['email'])
-    return render(request, 'index.html')
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login_user(request, user)
+        return redirect('/user/')
+    return redirect('/')
 
 
 def register(request):
