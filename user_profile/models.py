@@ -8,7 +8,7 @@ class Profile(Model):
     created_at = models.DateTimeField
 
     def friends(self):
-        return Friends.objects.get(user_id=self.id)
+        return Friends.objects.get(user_id=self.user.id)
 
 
 class Friends(Model):
