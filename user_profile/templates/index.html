@@ -5,7 +5,7 @@
 
 <ul>
     <li>id: {{ user.id }}</li>
-    <li>name: {{ user.name }} <a href="{% url 'index' %}">{{ user.name }}</a></li>
+    <li>name: {{ user.username }} <a href="{% url 'profile' %}">{{ user.name }}</a></li>
     <li>email: {{ user.email }}</li>
     <li>password: {{ user.password }}</li>
 </ul>

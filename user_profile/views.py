@@ -1,13 +1,15 @@
 import json
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render
-from .models import Profile
 
 
 def get_current_user(request):
     return request.user
 
 
+@login_required
 def index(request):
     user = get_current_user(request)
     return render(request, 'index.html', {
@@ -15,18 +17,20 @@ def index(request):
     })
 
 
+@login_required
 def friends(request):
     user = get_current_user(request)
-    user_friends = Profile.objects.get(pk=user['id']).friends
+    user_friends = user.get_friends()
     return render(request, 'friends.html', {
         'user': user,
         'friends': user_friends,
     })
 
 
+@login_required
 def members(request):
     user = get_current_user(request)
-    members = Profile.objects.all()
+    members = User.objects.all()
     return render(request, 'members.html', {
         'user': user,
         'members': members

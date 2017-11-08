@@ -3,12 +3,15 @@ from django.db import models
 from django.db.models import Model
 
 
-class Profile(Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField
+def get_friends(self):
+    try:
+        res = Friends.objects.get(user_id=self.id)
+    except:
+        res = []
+    return res
 
-    def friends(self):
-        return Friends.objects.get(user_id=self.user.id)
+
+User.add_to_class('get_friends', get_friends)
 
 
 class Friends(Model):
