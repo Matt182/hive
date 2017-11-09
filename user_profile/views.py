@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 def get_current_user(request):
@@ -14,7 +14,23 @@ def index(request):
     user = get_current_user(request)
     return render(request, 'index.html', {
         'user': user,
+        'person': user,
+        'owner': True,
     })
+
+
+@login_required
+def person(request, person_id):
+    user = get_current_user(request)
+    if user.id == int(person_id):
+        return redirect('profile')
+    person = get_object_or_404(User, pk=person_id)
+    return render(request, 'index.html', {
+        'user': user,
+        'person': person,
+        'owner': False,
+    })
+
 
 
 @login_required
