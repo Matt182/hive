@@ -12,7 +12,7 @@ def get_current_user(request):
 @login_required
 def index(request):
     user = get_current_user(request)
-    return render(request, 'index.html', {
+    return render(request, 'user_profile/index.html', {
         'user': user,
         'person': user,
         'owner': True,
@@ -25,7 +25,7 @@ def person(request, person_id):
     if user.id == int(person_id):
         return redirect('profile')
     person = get_object_or_404(User, pk=person_id)
-    return render(request, 'index.html', {
+    return render(request, 'user_profile/index.html', {
         'user': user,
         'person': person,
         'owner': False,
@@ -37,7 +37,7 @@ def person(request, person_id):
 def friends(request):
     user = get_current_user(request)
     user_friends = user.get_friends()
-    return render(request, 'friends.html', {
+    return render(request, 'user_profile/friends.html', {
         'user': user,
         'friends': user_friends,
     })
@@ -47,7 +47,7 @@ def friends(request):
 def members(request):
     user = get_current_user(request)
     members = User.objects.all()
-    return render(request, 'members.html', {
+    return render(request, 'user_profile/members.html', {
         'user': user,
         'members': members
     })

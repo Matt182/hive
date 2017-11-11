@@ -1,0 +1,11 @@
+{% extends "user_profile/base/base.html" %}
+
+{% block content %}
+<h1>Members</h1>
+
+<div>
+    {% for member in members %}
+        {% include "user_profile/_member.html" with member=member %}
+    {% endfor %}
+</div>
+{% endblock %}
