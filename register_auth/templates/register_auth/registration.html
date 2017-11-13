@@ -9,10 +9,13 @@
     <input type="password" name="password">
     <input type="submit" value="Register">
 </form>
-<a href="{% url 'login' %}">Login</a>
+
+<a href="{% url 'index' %}">Login</a>
 
 {% if err %}
-{{ err }}
+    {% for field, message in err %}
+        <p>{{ field }}: {{ message }}</p>
+    {% endfor %}
 {% endif %}
 
 {% endblock %}

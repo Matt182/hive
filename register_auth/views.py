@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
+from register_auth.forms import UserCreateForm
 from register_auth.utils.decorators import is_auth_then_redirect_home
 
 
@@ -31,12 +32,18 @@ def logout(request):
 @is_auth_then_redirect_home
 def registration(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        user = User.objects.create_user(username=username, email=email, password=password)
-        if user is not None:
+        # username = request.POST['username']
+        # email = request.POST['email']
+        # password = request.POST['password']
+        form = UserCreateForm(request.POST)
+        if form.is_valid():
+            # user = User.objects.create_user(username=username, email=email, password=password)
+            user = form.save()
             login_user(request, user)
             return redirect('/user/')
+        else:
+            return render(request, 'register_auth/registration.html', {
+                'err': form.errors()
+            })
     elif request.method == 'GET':
         return render(request, 'register_auth/registration.html')
