@@ -32,7 +32,6 @@ def person(request, person_id):
     })
 
 
-
 @login_required
 def friends(request):
     user = get_current_user(request)
@@ -51,3 +50,18 @@ def members(request):
         'user': user,
         'members': members
     })
+
+
+@login_required
+def send_friend_request(request, person_id):
+    pass
+
+
+@login_required
+def accept_friend_request(request, person_id):
+    pass
+
+
+@login_required
+def decline_friend_request(request, person_id):
+    pass
