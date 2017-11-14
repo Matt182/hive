@@ -25,10 +25,12 @@ def person(request, person_id):
     if user.id == int(person_id):
         return redirect('profile')
     person = get_object_or_404(User, pk=person_id)
+    status = user.get_relation_to(person_id)
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': person,
         'owner': False,
+        'status': status,
     })
 
 
