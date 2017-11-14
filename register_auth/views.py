@@ -1,26 +1,27 @@
-from django.contrib.auth import authenticate, login as login_user, logout as logout_user
+from django.contrib.auth import logout as logout_user, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
-from register_auth.forms import UserCreateForm
+from register_auth.forms import RegistrationForm
 from register_auth.utils.decorators import is_auth_then_redirect_home
 
 
 @is_auth_then_redirect_home
 def index(request):
-    return render(request, 'register_auth/index.html')
-
-
-@is_auth_then_redirect_home
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login_user(request, user)
-        return redirect('/user/')
-    return redirect('/')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('/user/')
+        return render(request, 'register_auth/index.html', {
+            'form': form
+        })
+    elif request.method == 'GET':
+        form = AuthenticationForm()
+        return render(request, 'register_auth/index.html', {
+            'form': form
+        })
 
 
 @login_required
@@ -32,18 +33,17 @@ def logout(request):
 @is_auth_then_redirect_home
 def registration(request):
     if request.method == 'POST':
-        # username = request.POST['username']
-        # email = request.POST['email']
-        # password = request.POST['password']
-        form = UserCreateForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            # user = User.objects.create_user(username=username, email=email, password=password)
             user = form.save()
-            login_user(request, user)
+            login(request, user)
             return redirect('/user/')
         else:
             return render(request, 'register_auth/registration.html', {
-                'err': form.errors()
+                'form': form,
             })
     elif request.method == 'GET':
-        return render(request, 'register_auth/registration.html')
+        form = RegistrationForm()
+        return render(request, 'register_auth/registration.html', {
+            'form': form,
+        })
