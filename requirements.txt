@@ -1,0 +1,10 @@
+Django==1.11.6
+django-debug-toolbar==1.8
+Faker==0.8.6
+psycopg2==2.7.3.1
+pyCLI==2.0.3
+python-dateutil==2.6.1
+pytz==2017.2
+six==1.11.0
+sqlparse==0.2.4
+text-unidecode==1.0
