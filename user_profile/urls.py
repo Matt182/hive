@@ -8,7 +8,10 @@ urlpatterns = [
     url(r'^members/$', views.members, name='members'),
     url(r'^friends/$', views.friends, name='friends'),
     url(r'^send_friend_request/(?P<person_id>[0-9]+)/$', views.send_friend_request, name='send_friend_request'),
-    url(r'^accept_friend_request/(?P<person_id>[0-9]+)/$', views.send_friend_request, name='accept_friend_request'),
-    url(r'^decline_friend_request/(?P<person_id>[0-9]+)/$', views.send_friend_request, name='decline_friend_request'),
-    url(r'^delete_friend/(?P<person_id>[0-9]+)/$', views.send_friend_request, name='delete_friend'),
+    url(r'^accept_friend_request/(?P<person_id>[0-9]+)/$', views.accept_friend_request, name='accept_friend_request'),
+    url(r'^decline_recieved_friend_request/(?P<person_id>[0-9]+)/$', views.decline_recieved_friend_request,
+        name='decline_recieved_friend_request'),
+    url(r'^decline_sended_friend_request/(?P<person_id>[0-9]+)/$', views.decline_sended_friend_request,
+        name='decline_sended_friend_request'),
+    url(r'^delete_friend/(?P<person_id>[0-9]+)/$', views.delete_friend, name='delete_friend'),
 ]

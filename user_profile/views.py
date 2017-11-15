@@ -7,7 +7,8 @@ from user_profile.models import \
     get_relation_to, \
     send_friend_request as send_request, \
     accept_friend_request as accept_request, \
-    decline_friend_request as decline_request
+    decline_friend_request as decline_request, \
+    delete_friend as delete_f
 
 
 def get_current_user(request):
@@ -74,7 +75,21 @@ def accept_friend_request(request, person_id):
 
 
 @login_required
-def decline_friend_request(request, person_id):
+def decline_recieved_friend_request(request, person_id):
     user = get_current_user(request)
     decline_request(user.id, person_id)
+    return redirect('person', person_id=person_id)
+
+
+@login_required
+def decline_sended_friend_request(request, person_id):
+    user = get_current_user(request)
+    decline_request(person_id, user.id)
+    return redirect('person', person_id=person_id)
+
+
+@login_required
+def delete_friend(request, person_id):
+    user = get_current_user(request)
+    delete_f(user.id, person_id)
     return redirect('person', person_id=person_id)

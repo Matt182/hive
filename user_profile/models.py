@@ -12,10 +12,22 @@ class Friends(Model):
     user_id = models.IntegerField()
     friend_id = models.IntegerField()
 
+    def __repr__(self):
+        return "|user_id: {}, friend_id: {}|".format(self.user_id, self.friend_id)
+
+    def __str__(self):
+        return self.__repr__()
+
 
 class FriendRequest(Model):
     sender_id = models.IntegerField()
     reciever_id = models.IntegerField()
+
+    def __repr__(self):
+        return "|sender_id: {}, reciever_id: {}|".format(self.sender_id, self.reciever_id)
+
+    def __str__(self):
+        return self.__repr__()
 
 
 def get_friends(user_id):
@@ -80,5 +92,8 @@ def decline_friend_request(user_id, person_id):
 
 @transaction.atomic
 def delete_friend(user_id, person_id):
-    Friends(user_id=user_id, friend_id=person_id).delete()
-    Friends(user_id=person_id, friend_id=user_id).delete()
+    friendship = Friends.objects.get(user_id=user_id, friend_id=person_id)
+    friendship.delete()
+    friendship = Friends.objects.get(user_id=person_id, friend_id=user_id)
+    friendship.delete()
+
