@@ -5,11 +5,15 @@
     <title>Title</title>
 </head>
 <body>
-    {% include "user_profile/base/menu.html" %}
+{% include "user_profile/base/menu.html" %}
 
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% load static %}
+<script src="{% static 'app.js' %}"></script>
+
 </body>
 </html>
