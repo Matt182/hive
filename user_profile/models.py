@@ -15,73 +15,66 @@ class Friends(Model):
 
 class FriendRequest(Model):
     sender_id = models.IntegerField()
-    receiver_id = models.IntegerField()
+    reciever_id = models.IntegerField()
 
 
-def get_friends(self):
+def get_friends(user_id):
     try:
-        res = Friends.objects.get(user_id=self.id)
+        res = Friends.objects.get(user_id=user_id)
     except:
         res = []
     return res
 
 
-def is_friend_to(self, friend_id):
+def is_friend_to(user_id, friend_id):
     try:
-        Friends.objects.get(user_id=self.id, friend_id=friend_id)
+        Friends.objects.get(user_id=user_id, friend_id=friend_id)
     except:
         return False
     return True
 
 
-def is_request_sended_to(self, person_id):
+def is_request_sended_to(user_id, person_id):
     try:
-        FriendRequest.objects.get(sender_id=self.id, receiver_id=person_id)
+        FriendRequest.objects.get(sender_id=user_id, reciever_id=person_id)
     except:
         return False
     return True
 
 
-def is_request_recieved_from(self, person_id):
+def is_request_recieved_from(user_id, person_id):
     try:
-        FriendRequest.objects.get(sender_id=person_id, receiver_id=self.id)
+        FriendRequest.objects.get(sender_id=person_id, reciever_id=user_id)
     except:
         return False
     return True
 
 
-def get_relation_to(self, person_id):
-    if self.is_friend_to(person_id):
+def get_relation_to(user_id, person_id):
+    if is_friend_to(user_id, person_id):
         return FRIEND
-    if self.is_request_sended_to(person_id):
+    if is_request_sended_to(user_id, person_id):
         return REQUEST_SENDED
-    if self.is_request_recieved_from(person_id):
+    if is_request_recieved_from(user_id, person_id):
         return REQUEST_RECIEVED
     return UNRELATED
 
 
-User.add_to_class('get_friends', get_friends)
-User.add_to_class('is_friend_to', is_friend_to)
-User.add_to_class('is_request_sended_to', is_request_sended_to)
-User.add_to_class('is_request_recieved_from', is_request_recieved_from)
-User.add_to_class('get_relation_to', get_relation_to)
-
-
 def send_friend_request(user_id, person_id):
-    req = FriendRequest(user_id=user_id, person_id=person_id)
+    req = FriendRequest(sender_id=user_id, reciever_id=person_id)
     req.save()
 
 
 @transaction.atomic
 def accept_friend_request(user_id, person_id):
-    req = FriendRequest.objects.get(sender_id=person_id, receiver_id=user_id)
+    req = FriendRequest.objects.get(sender_id=person_id, reciever_id=user_id)
     req.delete()
     Friends(user_id=user_id, friend_id=person_id).save()
     Friends(user_id=person_id, friend_id=user_id).save()
 
 
 def decline_friend_request(user_id, person_id):
-    req = FriendRequest.objects.get(sender_id=person_id, receiver_id=user_id)
+    req = FriendRequest.objects.get(sender_id=person_id, reciever_id=user_id)
     req.delete()
 
 

@@ -1,8 +1,13 @@
-import json
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+
+from user_profile.models import \
+    get_friends, \
+    get_relation_to, \
+    send_friend_request as send_request, \
+    accept_friend_request as accept_request, \
+    decline_friend_request as decline_request
 
 
 def get_current_user(request):
@@ -25,7 +30,7 @@ def person(request, person_id):
     if user.id == int(person_id):
         return redirect('profile')
     person = get_object_or_404(User, pk=person_id)
-    status = user.get_relation_to(person_id)
+    status = get_relation_to(user.id, person_id)
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': person,
@@ -37,7 +42,7 @@ def person(request, person_id):
 @login_required
 def friends(request):
     user = get_current_user(request)
-    user_friends = user.get_friends()
+    user_friends = get_friends(user.id)
     return render(request, 'user_profile/friends.html', {
         'user': user,
         'friends': user_friends,
@@ -56,14 +61,20 @@ def members(request):
 
 @login_required
 def send_friend_request(request, person_id):
-    pass
+    user = get_current_user(request)
+    send_request(user.id, person_id)
+    return redirect('person', person_id=person_id)
 
 
 @login_required
 def accept_friend_request(request, person_id):
-    pass
+    user = get_current_user(request)
+    accept_request(user.id, person_id)
+    return redirect('person', person_id=person_id)
 
 
 @login_required
 def decline_friend_request(request, person_id):
-    pass
+    user = get_current_user(request)
+    decline_request(user.id, person_id)
+    return redirect('person', person_id=person_id)

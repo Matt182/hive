@@ -1,18 +1,19 @@
-from django.contrib.auth.hashers import identify_hasher, get_hasher
+from django.contrib.auth.hashers import identify_hasher
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 
-# Create your tests here.
+from django.urls import reverse
+
 HTTP_REDIRECT = 302
 HTTP_OK = 200
 
 
 class UserProfileTestCase(TestCase):
-    get_user_url = '/user/'
-    get_login_url = '/'
-    get_logout_url = '/logout/'
-    registration_url = '/registration/'
-    post_login_url = '/'
+    get_user_url = reverse('profile')
+    get_login_url = reverse('index')
+    get_logout_url = reverse('logout')
+    registration_url = reverse('registration')
+    post_login_url = reverse('index')
 
     def setUp(self):
         User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
