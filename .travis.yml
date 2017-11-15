@@ -5,10 +5,10 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - python manage.py test
+  - python manage.py test -y
 
 services:
   - postgresql
 
 before_script:
-  - psql -c "CREATE USER root WITH password 'root';" -U postgres
+  - psql -c "CREATE USER root WITH password 'root';ALTER USER root CREATEDB;" -U postgres
