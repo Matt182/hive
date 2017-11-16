@@ -3,4 +3,4 @@ __pycache__
 start_server
 /node_modules/
 *.log
-web_client
+static
