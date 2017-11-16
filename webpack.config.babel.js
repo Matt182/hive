@@ -1,7 +1,5 @@
 import path from 'path'
 import webpack from 'webpack'
-import jsonImporter from 'node-sass-json-importer'
-
 
 export default {
    entry:  './web_client/app.js',
@@ -23,14 +21,4 @@ export default {
            }
        ]
    },
-//   plugins: [
-//       new webpack.LoaderOptionsPlugin({
-//           options: {
-//               sassLoader: {
-//                   importer: jsonImporter,
-//               },
-//               context: __dirname,
-//           },
-//       }),
-//   ]
 }
