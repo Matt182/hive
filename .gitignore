@@ -4,3 +4,6 @@ start_server
 /node_modules/
 *.log
 static
+venv
+staticfiles
+.env
