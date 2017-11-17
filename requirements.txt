@@ -1,6 +1,8 @@
+dj-database-url==0.4.2
 Django==1.11.6
 django-debug-toolbar==1.8
 Faker==0.8.6
+gunicorn==19.7.1
 psycopg2==2.7.3.1
 pyCLI==2.0.3
 python-dateutil==2.6.1
