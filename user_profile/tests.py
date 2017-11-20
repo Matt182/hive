@@ -21,7 +21,7 @@ class UserProfileTestCase(TestCase):
         self.assertIsNotNone(req)
         self.c.logout()
         self.c.login(username='tomas', password='passjeffpass')
-        response = self.c.post(reverse('decline_recieved_friend_request', kwargs={'person_id': self.user1.id}))
+        response = self.c.post(reverse('decline_received_friend_request', kwargs={'person_id': self.user1.id}))
         self.assertEqual(response.status_code, HTTP_REDIRECT)
         try:
             FriendRequest.objects.get(sender_id=self.user1.id, reciever_id=self.user2.id)
@@ -57,14 +57,14 @@ class UserProfileTestCase(TestCase):
         response = self.c.post(reverse('delete_friend', kwargs={'person_id': self.user1.id}))
         self.assertEqual(response.status_code, HTTP_REDIRECT)
 
-        # try:
-        #     Friends.objects.get(user_id=self.user1.id, friend_id=self.user2.id)
-        #     self.assertTrue(False)
-        # except:
-        #     self.assertTrue(True)
-        #
-        # try:
-        #     Friends.objects.get(user_id=self.user2.id, friend_id=self.user1.id)
-        #     self.assertTrue(False)
-        # except:
-        #     self.assertTrue(True)
+        try:
+            Friends.objects.get(user_id=self.user1.id, friend_id=self.user2.id)
+            self.assertTrue(False)
+        except:
+            self.assertTrue(True)
+
+        try:
+            Friends.objects.get(user_id=self.user2.id, friend_id=self.user1.id)
+            self.assertTrue(False)
+        except:
+            self.assertTrue(True)

@@ -24,7 +24,7 @@ SECRET_KEY = 'buxnu)x!rrcdf!$1xio89k97^7_)f^tlvt1=inn6-sc1b3r3hj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 LOGIN_URL = '/'
-ALLOWED_HOSTS = ['fathomless-bastion-27541.herokuapp.com']
+ALLOWED_HOSTS = ['fathomless-bastion-27541.herokuapp.com', 'localhost']
 
 # Application definition
 

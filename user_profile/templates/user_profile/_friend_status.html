@@ -3,11 +3,11 @@
     {% if status == 1 %}
         <div>Your friend <a href="{% url 'delete_friend' person.id %}">Unfriend</a></div>
     {% elif status == 2 %}
-        <div>Sended <a href="{% url 'decline_sended_friend_request' person.id %}">Decline</a></div>
+        <div>Sended <a href="{% url 'decline_send_friend_request' person.id %}">Decline</a></div>
     {% elif status == 3 %}
         <div>
             Recieved <a href="{% url 'accept_friend_request' person.id %}">Accept</a>
-            <a href="{% url 'decline_recieved_friend_request' person.id %}">Decline</a>
+            <a href="{% url 'decline_received_friend_request' person.id %}">Decline</a>
         </div>
     {% else %}
         <div><a href="{% url 'send_friend_request' person.id %}">Send request</a></div>

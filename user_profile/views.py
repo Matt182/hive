@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
-from user_profile.models import \
+from user_profile.helpers.friend_helpers import \
     get_friends, \
     get_relation_to, \
     send_friend_request as send_request, \
@@ -75,14 +75,14 @@ def accept_friend_request(request, person_id):
 
 
 @login_required
-def decline_recieved_friend_request(request, person_id):
+def decline_received_friend_request(request, person_id):
     user = get_current_user(request)
     decline_request(user.id, person_id)
     return redirect('person', person_id=person_id)
 
 
 @login_required
-def decline_sended_friend_request(request, person_id):
+def decline_send_friend_request(request, person_id):
     user = get_current_user(request)
     decline_request(person_id, user.id)
     return redirect('person', person_id=person_id)

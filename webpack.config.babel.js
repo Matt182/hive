@@ -2,9 +2,9 @@ import path from 'path'
 import webpack from 'webpack'
 
 export default {
-   entry:  './web_client/app.js',
+   entry:  './static_source/app.js',
    output:  {
-       path: path.resolve(__dirname, 'static'),
+       path: path.resolve(__dirname, 'public/static'),
        filename: 'app.js'
    },
    module: {
