@@ -26,7 +26,7 @@ class Profile(Model):
     gender = models.CharField(max_length=20)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
-    birth_date = models.DateTimeField()
+    birth_date = models.DateField()
 
 
 class Friends(Model):

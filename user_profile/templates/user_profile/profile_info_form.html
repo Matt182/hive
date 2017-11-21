@@ -1,0 +1,9 @@
+{% extends "user_profile/base/base.html" %}
+
+{% block content %}
+<form action="{% url 'add_profile_info' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Save">
+</form>
+{% endblock %}

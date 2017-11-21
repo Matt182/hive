@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
+from user_profile.forms import ProfileForm
 from user_profile.helpers.friend_helpers import \
     get_friends, \
     get_relation_to, \
@@ -106,5 +107,21 @@ def delete_friend(request, person_id):
 
 
 @login_required
-def add_profile_info():
-    pass
+def add_profile_info(request):
+    user = get_current_user(request)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            redirect('profile')
+        else:
+            return render(request, 'user_profile/profile_info_form.html', {
+                'user': user,
+                'form': form,
+            })
+    else:
+        form = ProfileForm()
+        return render(request, 'user_profile/profile_info_form.html', {
+            'user': user,
+            'form': form,
+        })

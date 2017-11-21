@@ -4,7 +4,7 @@ import webpack from 'webpack'
 export default {
    entry:  './static_source/app.js',
    output:  {
-       path: path.resolve(__dirname, 'public/static'),
+       path: path.resolve(__dirname, 'public/js'),
        filename: 'app.js'
    },
    module: {
