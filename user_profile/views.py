@@ -18,10 +18,15 @@ def get_current_user(request):
 @login_required
 def index(request):
     user = get_current_user(request)
+    try:
+        profile = user.profile
+    except:
+        profile = None
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': user,
         'owner': True,
+        'profile': profile,
     })
 
 
@@ -31,12 +36,17 @@ def person(request, person_id):
     if user.id == int(person_id):
         return redirect('profile')
     person = get_object_or_404(User, pk=person_id)
+    try:
+        profile = person.profile
+    except:
+        profile = None
     status = get_relation_to(user.id, person_id)
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': person,
         'owner': False,
         'status': status,
+        'profile': profile,
     })
 
 
@@ -93,3 +103,8 @@ def delete_friend(request, person_id):
     user = get_current_user(request)
     delete_f(user.id, person_id)
     return redirect('person', person_id=person_id)
+
+
+@login_required
+def add_profile_info():
+    pass

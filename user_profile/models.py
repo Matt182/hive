@@ -7,6 +7,13 @@ REQUEST_SEND = 2
 REQUEST_RECEIVED = 3
 UNRELATED = 4
 
+GENDER_MALE = 'male'
+GENDER_FEMALE = 'female'
+
+
+def user_directory_path(instance, filename):
+    return 'media/user_{}/{}'.format(instance.user.id, filename)
+
 
 class Profile(Model):
     user = models.OneToOneField(
@@ -14,12 +21,12 @@ class Profile(Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    avatar = 0
-    bio = 0
-    gender = 0
-    email = 0
-    phone = 0
-    birth_date = 0
+    avatar = models.FileField(upload_to=user_directory_path)
+    bio = models.TextField()
+    gender = models.CharField(max_length=20)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    birth_date = models.DateTimeField()
 
 
 class Friends(Model):
@@ -38,7 +45,7 @@ class FriendRequest(Model):
     receiver_id = models.IntegerField()
 
     def __repr__(self):
-        return "|sender_id: {}, reciever_id: {}|".format(self.sender_id, self.receiver_id)
+        return "|sender_id: {}, receiver_id: {}|".format(self.sender_id, self.receiver_id)
 
     def __str__(self):
         return self.__repr__()

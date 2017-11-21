@@ -18,4 +18,5 @@ urlpatterns = [
         name='decline_send_friend_request'
         ),
     url(r'^delete_friend/(?P<person_id>[0-9]+)/$', views.delete_friend, name='delete_friend'),
+    url(r'^add_profile_info/$', views.add_profile_info, name='add_profile_info'),
 ]

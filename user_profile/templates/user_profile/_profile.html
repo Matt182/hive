@@ -1,0 +1,7 @@
+{% if owner and not profile %}
+    <a href="{% url 'add_profile_info' %}">Добавить информацию</a>
+{% elif profile %}
+    {% for field in profile %}
+        {{ field }}
+    {% endfor %}
+{% endif %}

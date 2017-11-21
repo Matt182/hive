@@ -25,7 +25,9 @@ SECRET_KEY = 'buxnu)x!rrcdf!$1xio89k97^7_)f^tlvt1=inn6-sc1b3r3hj'
 DEBUG = True
 LOGIN_URL = '/'
 ALLOWED_HOSTS = ['fathomless-bastion-27541.herokuapp.com', 'localhost']
-
+public = os.path.join(BASE_DIR, 'public')
+MEDIA_ROOT = os.path.join(public, 'media'),
+MEDIA_URL = '/media/'
 # Application definition
 
 INSTALLED_APPS = [
@@ -128,8 +130,8 @@ USE_TZ = True
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))   # heroku
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(PROJECT_ROOT, 'static'),                   # heroku
-)
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')     # heroku
+
+# STATICFILES_DIRS = (
+#     os.path.join(public, 'static'),                         # heroku
+# )
+STATIC_ROOT = os.path.join(public, 'static')                # heroku

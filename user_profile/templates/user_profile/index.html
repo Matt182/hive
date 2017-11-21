@@ -14,4 +14,7 @@
     <li>password: {{ person.password }}</li>
 </ul>
 
+{% include "user_profile/_avatar.html" with profile=profile%}
+{% include "user_profile/_profile.html" with owner=owner profile=profile %}
+
 {% endblock %}
