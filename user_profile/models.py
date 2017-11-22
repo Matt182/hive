@@ -12,7 +12,7 @@ GENDER_FEMALE = 'female'
 
 
 def user_directory_path(instance, filename):
-    return 'media/user_{}/{}'.format(instance.user.id, filename)
+    return 'user_{}/avatar_{}'.format(instance.user.id, filename)
 
 
 class Profile(Model):

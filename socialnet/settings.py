@@ -26,8 +26,8 @@ DEBUG = True
 LOGIN_URL = '/'
 ALLOWED_HOSTS = ['fathomless-bastion-27541.herokuapp.com', 'localhost']
 public = os.path.join(BASE_DIR, 'public')
-MEDIA_ROOT = os.path.join(public, 'media'),
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(public, 'media')
+MEDIA_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
@@ -133,6 +133,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(public, 'js'),
-    os.path.join(public, 'media/system'),
+    os.path.join(public, 'media'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'public')  # heroku

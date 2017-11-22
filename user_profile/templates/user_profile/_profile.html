@@ -1,7 +1,17 @@
 {% if owner and not profile %}
     <a href="{% url 'add_profile_info' %}">Добавить информацию</a>
-{% elif profile %}
-    {% for field in profile %}
-        {{ field }}
-    {% endfor %}
+{% elif owner and profile %}
+    {% if profile.bio %}
+        <p>Bio: {{profile.bio}}</p>
+    {% endif %}
+    {% if profile.email %}
+        <p>Bio: {{profile.email}}</p>
+    {% endif %}
+    {% if profile.phone %}
+        <p>Bio: {{profile.phone}}</p>
+    {% endif %}
+    {% if profile.birth_date %}
+        <p>Bio: {{profile.birth_date}}</p>
+    {% endif %}
+    <a href="{% url 'add_profile_info' %}">Редактировать информацию</a>
 {% endif %}
