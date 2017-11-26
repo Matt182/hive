@@ -21,7 +21,7 @@ def is_friend_to(user_id, friend_id):
 
 def is_request_send_to(user_id, person_id):
     try:
-        FriendRequest.objects.get(sender_id=user_id, reciever_id=person_id)
+        FriendRequest.objects.get(sender_id=user_id, receiver_id=person_id)
     except:
         return False
     return True
@@ -29,7 +29,7 @@ def is_request_send_to(user_id, person_id):
 
 def is_request_received_from(user_id, person_id):
     try:
-        FriendRequest.objects.get(sender_id=person_id, reciever_id=user_id)
+        FriendRequest.objects.get(sender_id=person_id, receiver_id=user_id)
     except:
         return False
     return True
@@ -46,20 +46,20 @@ def get_relation_to(user_id, person_id):
 
 
 def send_friend_request(user_id, person_id):
-    req = FriendRequest(sender_id=user_id, reciever_id=person_id)
+    req = FriendRequest(sender_id=user_id, receiver_id=person_id)
     req.save()
 
 
 @transaction.atomic
 def accept_friend_request(user_id, person_id):
-    req = FriendRequest.objects.get(sender_id=person_id, reciever_id=user_id)
+    req = FriendRequest.objects.get(sender_id=person_id, receiver_id=user_id)
     req.delete()
     Friends(user_id=user_id, friend_id=person_id).save()
     Friends(user_id=person_id, friend_id=user_id).save()
 
 
 def decline_friend_request(user_id, person_id):
-    req = FriendRequest.objects.get(sender_id=person_id, reciever_id=user_id)
+    req = FriendRequest.objects.get(sender_id=person_id, receiver_id=user_id)
     req.delete()
 
 

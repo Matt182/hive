@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from user_profile.forms import ProfileForm, create_populated_profile_form
 from user_profile.helpers.friend_helpers import \
@@ -10,6 +12,7 @@ from user_profile.helpers.friend_helpers import \
     accept_friend_request as accept_request, \
     decline_friend_request as decline_request, \
     delete_friend as delete_f
+from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED
 
 
 def get_current_user(request):
@@ -23,6 +26,7 @@ def index(request):
         profile = user.profile
     except:
         profile = None
+
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': user,
@@ -42,6 +46,7 @@ def person(request, person_id):
     except:
         profile = None
     status = get_relation_to(user.id, person_id)
+
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': person,
@@ -55,6 +60,7 @@ def person(request, person_id):
 def friends(request):
     user = get_current_user(request)
     user_friends = get_friends(user.id)
+
     return render(request, 'user_profile/friends.html', {
         'user': user,
         'friends': user_friends,
@@ -65,6 +71,7 @@ def friends(request):
 def members(request):
     user = get_current_user(request)
     members = User.objects.all()
+
     return render(request, 'user_profile/members.html', {
         'user': user,
         'members': members
@@ -72,38 +79,68 @@ def members(request):
 
 
 @login_required
-def send_friend_request(request, person_id):
+@require_POST
+def send_friend_request(request):
     user = get_current_user(request)
+    person_id = request.POST['person_id']
     send_request(user.id, person_id)
-    return redirect('person', person_id=person_id)
+
+    return JsonResponse({
+        'result': 'success',
+        'status': REQUEST_SEND,
+    })
 
 
 @login_required
-def accept_friend_request(request, person_id):
+@require_POST
+def accept_friend_request(request):
     user = get_current_user(request)
+    person_id = request.POST['person_id']
     accept_request(user.id, person_id)
-    return redirect('person', person_id=person_id)
+
+    return JsonResponse({
+        'result': 'success',
+        'status': FRIEND,
+    })
 
 
 @login_required
-def decline_received_friend_request(request, person_id):
+@require_POST
+def decline_received_friend_request(request):
     user = get_current_user(request)
+    person_id = request.POST['person_id']
     decline_request(user.id, person_id)
-    return redirect('person', person_id=person_id)
+
+    return JsonResponse({
+        'result': 'success',
+        'status': UNRELATED,
+    })
 
 
 @login_required
-def decline_send_friend_request(request, person_id):
+@require_POST
+def decline_send_friend_request(request):
     user = get_current_user(request)
+    person_id = request.POST['person_id']
     decline_request(person_id, user.id)
-    return redirect('person', person_id=person_id)
+
+    return JsonResponse({
+        'result': 'success',
+        'status': UNRELATED,
+    })
 
 
 @login_required
-def delete_friend(request, person_id):
+@require_POST
+def delete_friend(request):
     user = get_current_user(request)
+    person_id = request.POST['person_id']
     delete_f(user.id, person_id)
-    return redirect('person', person_id=person_id)
+
+    return JsonResponse({
+        'result': 'success',
+        'status': UNRELATED,
+    })
 
 
 @login_required
@@ -115,6 +152,7 @@ def add_profile_info(request):
         except:
             profile = None
         form = ProfileForm(instance=profile, data=request.POST, files=request.FILES)
+
         if form.is_valid():
             form.save()
             return redirect('profile')
@@ -125,6 +163,7 @@ def add_profile_info(request):
             })
     elif request.method == 'GET':
         form = create_populated_profile_form(user)
+
         return render(request, 'user_profile/profile_info_form.html', {
             'user': user,
             'form': form,
