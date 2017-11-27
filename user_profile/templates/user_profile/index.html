@@ -1,20 +1,17 @@
 {% extends "user_profile/base/base.html" %}
 
 {% block content %}
-<h1>Header</h1>
 
-{% if not owner %}
-    {% include "user_profile/_friend_status.html" with status=status person=person %}
-{% endif %}
-
-<ul>
-    <li>id: {{ person.id }}</li>
-    <li>name: {{ person.username }} <a href="{% url 'person' person.id %}">{{ person.username }}</a></li>
-    <li>email: {{ person.email }}</li>
-    <li>password: {{ person.password }}</li>
-</ul>
-
-{% include "user_profile/_avatar.html" with profile=profile%}
-{% include "user_profile/_profile.html" with owner=owner profile=profile %}
+<div class="row">
+    <div class="col-4">
+        {% include "user_profile/_avatar.html" with profile=profile%}
+        {% if not owner %}
+            {% include "user_profile/_friend_status.html" with status=status person=person %}
+        {% endif %}
+    </div>
+    <div class="col-8">
+        {% include "user_profile/_profile.html" with owner=owner profile=profile %}
+    </div>
+</div>
 
 {% endblock %}

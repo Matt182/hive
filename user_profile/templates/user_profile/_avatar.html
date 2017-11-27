@@ -1,6 +1,6 @@
 {% if profile and profile.avatar %}
-    <img src="{{ profile.avatar.url }}" alt="">
+    <img class="img-fluid" src="{{ profile.avatar.url }}" alt="">
 {% else %}
     {% load static %}
-    <img src="{% static 'system/default_avatar.png' %}" alt="">
+    <img class="img-fluid" src="{% static 'system/default_avatar.png' %}" alt="">
 {% endif %}

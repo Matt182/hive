@@ -5,13 +5,13 @@
         <p>Bio: {{profile.bio}}</p>
     {% endif %}
     {% if profile.email %}
-        <p>Bio: {{profile.email}}</p>
+        <p>Email: {{profile.email}}</p>
     {% endif %}
     {% if profile.phone %}
-        <p>Bio: {{profile.phone}}</p>
+        <p>Phone: {{profile.phone}}</p>
     {% endif %}
     {% if profile.birth_date %}
-        <p>Bio: {{profile.birth_date}}</p>
+        <p>Birthday: {{profile.birth_date}}</p>
     {% endif %}
     <a href="{% url 'add_profile_info' %}">Редактировать информацию</a>
 {% endif %}
