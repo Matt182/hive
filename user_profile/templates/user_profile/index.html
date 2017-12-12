@@ -12,6 +12,17 @@
     <div class="col-8">
         {% include "user_profile/_profile.html" with owner=owner profile=profile %}
     </div>
+    <div>
+        <form action="{% url 'send_friend_post' %}" method="post">
+            <input type="hidden" name="wall_owner_id" value="{{person.id}}">
+            <input type="hidden" name="author_id" value="{{user.id}}">
+            <input type="text" name="message">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+    <div>
+        {% include "user_profile/_posts.html" with posts=posts %}
+    </div>
 </div>
 
 {% endblock %}

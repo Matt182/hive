@@ -14,7 +14,7 @@ from user_profile.helpers.friend_helpers import \
     decline_friend_request as decline_request, \
     delete_friend as delete_f
 from user_profile.helpers.post_helpers import create_post
-from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED
+from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED, Post
 
 
 def get_current_user(request):
@@ -28,12 +28,14 @@ def index(request):
         profile = user.profile
     except:
         profile = None
+    posts = Post.objects.filter(owner_id=user.id)
 
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': user,
         'owner': True,
         'profile': profile,
+        'posts': posts
     })
 
 
@@ -48,6 +50,7 @@ def person(request, person_id):
     except:
         profile = None
     status = get_relation_to(user.id, person_id)
+    posts = Post.objects.filter(owner_id=person.id)
 
     return render(request, 'user_profile/index.html', {
         'user': user,
@@ -55,6 +58,7 @@ def person(request, person_id):
         'owner': False,
         'status': status,
         'profile': profile,
+        'posts': posts
     })
 
 
