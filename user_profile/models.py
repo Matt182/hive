@@ -49,3 +49,15 @@ class FriendRequest(Model):
 
     def __str__(self):
         return self.__repr__()
+
+
+class Post(Model):
+    author_id = models.IntegerField()
+    owner_id = models.IntegerField()
+    message = models.TextField()
+
+    def __repr__(self):
+        return "|author_id: {}, owner_id: {}. message: {}|".format(self.author_id, self.owner_id, self.message)
+
+    def __str__(self):
+        return self.__repr__()

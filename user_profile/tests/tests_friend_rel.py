@@ -9,7 +9,7 @@ from user_profile.models import FriendRequest, Friends
 HTTP_REDIRECT = 302
 
 
-class UserProfileTestCase(TestCase):
+class FriendsRelationTestCase(TestCase):
 
     post_send_friend_request = reverse('send_friend_request')
     post_decline_received_friend_request = reverse('decline_received_friend_request')

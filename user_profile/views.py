@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -12,6 +13,7 @@ from user_profile.helpers.friend_helpers import \
     accept_friend_request as accept_request, \
     decline_friend_request as decline_request, \
     delete_friend as delete_f
+from user_profile.helpers.post_helpers import create_post
 from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED
 
 
@@ -168,3 +170,17 @@ def add_profile_info(request):
             'user': user,
             'form': form,
         })
+
+
+@login_required
+@require_POST
+def send_post(request):
+    user = get_current_user(request)
+    owner_id = request.POST['wall_owner_id']
+    msg = request.POST['message']
+    post = create_post(owner_id, user.id, msg)
+    data = serializers.serialize('json', [post], fields=('owner_id', 'author_id', 'created_at'))
+    return JsonResponse({
+        'result': 'success',
+        'post': data,
+    })
