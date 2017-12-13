@@ -56,6 +56,11 @@ $(function (){
    })
 })
 
+const STATUS_FRIEND = 1;
+const STATUS_REQUEST_SEND = 2;
+const STATUS_REQUEST_RECEIVED = 3;
+const STATUS_UNRELATED = 4;
+
 function update_status_block(status) {
    let button = ''
 

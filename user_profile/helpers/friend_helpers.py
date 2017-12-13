@@ -1,13 +1,11 @@
+from django.contrib.auth.models import User
 from django.db import transaction
 
 from user_profile.models import Friends, FriendRequest, FRIEND, REQUEST_SEND, UNRELATED, REQUEST_RECEIVED
 
 
 def get_friends(user_id):
-    try:
-        res = Friends.objects.get(user_id=user_id)
-    except:
-        res = []
+    res = Friends.objects.filter(user_id=user_id).select_related('friend_id')
     return res
 
 

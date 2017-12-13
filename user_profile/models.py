@@ -31,7 +31,10 @@ class Profile(Model):
 
 class Friends(Model):
     user_id = models.IntegerField()
-    friend_id = models.IntegerField()
+    friend = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
 
     def __repr__(self):
         return "|user_id: {}, friend_id: {}|".format(self.user_id, self.friend_id)
@@ -51,10 +54,19 @@ class FriendRequest(Model):
         return self.__repr__()
 
 
+def get_deleted_user():
+    return User.objects.get_or_create(username='deleted')[0]
+
+
 class Post(Model):
-    author_id = models.IntegerField()
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET(get_deleted_user),
+    )
     owner_id = models.IntegerField()
     message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
         return "|author_id: {}, owner_id: {}. message: {}|".format(self.author_id, self.owner_id, self.message)

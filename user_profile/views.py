@@ -28,7 +28,7 @@ def index(request):
         profile = user.profile
     except:
         profile = None
-    posts = Post.objects.filter(owner_id=user.id)
+    posts = Post.objects.filter(owner_id=user.id).order_by('-created_at')
 
     return render(request, 'user_profile/index.html', {
         'user': user,
@@ -50,7 +50,7 @@ def person(request, person_id):
     except:
         profile = None
     status = get_relation_to(user.id, person_id)
-    posts = Post.objects.filter(owner_id=person.id)
+    posts = Post.objects.filter(owner_id=person.id).order_by('-created_at')
 
     return render(request, 'user_profile/index.html', {
         'user': user,
@@ -66,7 +66,7 @@ def person(request, person_id):
 def friends(request):
     user = get_current_user(request)
     user_friends = get_friends(user.id)
-
+    print(user_friends)
     return render(request, 'user_profile/friends.html', {
         'user': user,
         'friends': user_friends,
