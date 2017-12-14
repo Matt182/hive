@@ -5,7 +5,7 @@ from user_profile.models import Friends, FriendRequest, FRIEND, REQUEST_SEND, UN
 
 
 def get_friends(user_id):
-    res = Friends.objects.filter(user_id=user_id).select_related('friend_id')
+    res = Friends.objects.filter(user_id=user_id).select_related('friend')
     return res
 
 

@@ -5,24 +5,16 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from user_profile.models import FriendRequest, Friends
+from user_profile.tests.BaseTestCase import BestTestCase
 
 HTTP_REDIRECT = 302
 
 
-class FriendsRelationTestCase(TestCase):
+class FriendsRelationTestCase(BestTestCase):
 
     post_send_friend_request = reverse('send_friend_request')
     post_decline_received_friend_request = reverse('decline_received_friend_request')
     post_accept_friend_request = reverse('accept_friend_request')
-
-    def setUp(self):
-        self.user1 = User.objects.create_user('johnathon', 'lennon@thebeatles.com', 'passjohnpass')
-        self.user2 = User.objects.create_user('tomas', 'tom@jeff.com', 'passjeffpass')
-        self.c = Client()
-        self.c.login(username='johnathon', password='passjohnpass')
-
-    def ajax_post(self, url, data):
-        return self.c.post(url, data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
     @staticmethod
     def is_no_row(model, kwargs):

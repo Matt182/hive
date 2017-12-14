@@ -1,0 +1,21 @@
+<div class="border rounded">
+    <div>
+        <form action="{% url 'leave_comment' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="post_id" value="{{post.id}}">
+            <input type="hidden" name="author_id" value="{{user.id}}">
+            <input type="text" name="message">
+            <input type="submit" value="comment">
+        </form>
+    </div>
+    <div>
+        {% comments = post.comment_set.all() %}
+        {% for comment in comments %}
+            <div class="border rounded">
+                <p>author: {{comment.author.username}}</p>
+                <p>created at: {{comment.created_at}}</p>
+                <p>message: {{comment.message}}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>

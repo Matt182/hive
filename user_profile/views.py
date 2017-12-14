@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
 from user_profile.forms import ProfileForm, create_populated_profile_form
+from user_profile.helpers.comments_helper import create_comment
 from user_profile.helpers.friend_helpers import \
     get_friends, \
     get_relation_to, \
@@ -35,7 +36,7 @@ def index(request):
         'person': user,
         'owner': True,
         'profile': profile,
-        'posts': posts
+        'posts': posts,
     })
 
 
@@ -187,4 +188,19 @@ def send_post(request):
     return JsonResponse({
         'result': 'success',
         'post': data,
+    })
+
+
+@login_required
+@require_POST
+def leave_comment(request):
+    user = get_current_user(request)
+    post_id = request.POST['post_id']
+    msg = request.POST['message']
+    comment = create_comment(post_id, user.id, msg)
+    data = comment.to_json()
+
+    return JsonResponse({
+        'result': 'success',
+        'comment': data,
     })

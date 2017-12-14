@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^delete_friend/$', views.delete_friend, name='delete_friend'),
     url(r'^add_profile_info/$', views.add_profile_info, name='add_profile_info'),
 
-    url(r'^send_post/$', views.send_post, name='send_friend_post')
+    url(r'^send_post/$', views.send_post, name='send_post'),
+    url(r'^leave_comment/$', views.leave_comment, name='leave_comment')
 ]

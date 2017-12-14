@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.db import models
 from django.db.models import Model
 
@@ -69,7 +70,33 @@ class Post(Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return "|author_id: {}, owner_id: {}. message: {}|".format(self.author_id, self.owner_id, self.message)
+        return "|author_id: {}, owner_id: {}. message: {}|".format(self.author.id, self.owner_id, self.message)
 
     def __str__(self):
         return self.__repr__()
+
+    def to_json(self):
+        return serializers.serialize('json', [self], fields=('owner_id', 'author_id', 'created_at'))
+
+
+class Comment(Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+    )
+    message = models.TextField()
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET(get_deleted_user),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __repr__(self):
+        return "|author_id: {}, post_id: {}. message: {}|".format(self.author.id, self.post_id, self.message)
+
+    def __str__(self):
+        return self.__repr__()
+
+    def to_json(self):
+        return serializers.serialize('json', [self], fields=('post_id', 'author_id', 'message', 'created_at'))
