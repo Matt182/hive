@@ -1,8 +1,8 @@
 {% for post in posts %}
     <div class="border rounded">
-        <p>sender {{post.author.username}}</p>
-        <p>message {{post.message}}</p>
-        <p>created {{post.created_at}}</p>
+        <p>sender {{post.post.author.username}}</p>
+        <p>message {{post.post.message}}</p>
+        <p>created {{post.post.created_at}}</p>
     </div>
     {% include "user_profile/_comments.html" with post=post user=user%}
 {% endfor %}

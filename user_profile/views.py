@@ -14,7 +14,7 @@ from user_profile.helpers.friend_helpers import \
     accept_friend_request as accept_request, \
     decline_friend_request as decline_request, \
     delete_friend as delete_f
-from user_profile.helpers.post_helpers import create_post
+from user_profile.helpers.post_helpers import create_post, get_posts
 from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED, Post
 
 
@@ -29,7 +29,8 @@ def index(request):
         profile = user.profile
     except:
         profile = None
-    posts = Post.objects.filter(owner_id=user.id).order_by('-created_at')
+    posts = get_posts(user.id)
+    print(posts)
 
     return render(request, 'user_profile/index.html', {
         'user': user,
