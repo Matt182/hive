@@ -4,7 +4,7 @@ window.Popper = require('popper.js') // required for tooltip, popup...
 require('bootstrap')
 
 import './index.scss' // include bootstrap css file with own modifications
-
+import { setup_ajax_csrf } from './helpers'
 import Cookies from 'js-cookie'
 
 // tooltip and popover require javascript side modification to enable them (new in Bootstrap 4)
@@ -81,22 +81,6 @@ function update_status_block(status) {
    $('#status-block')
        .empty()
        .html(button)
-}
-
-function setup_ajax_csrf() {
-  const csrftoken = Cookies.get('csrftoken');
-
-  function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-  }
-  $.ajaxSetup({
-      beforeSend: function(xhr, settings) {
-          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-              xhr.setRequestHeader("X-CSRFToken", csrftoken);
-          }
-      }
-  });
 }
 
 console.log('Hello World')

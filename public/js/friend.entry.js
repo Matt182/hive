@@ -12838,6 +12838,11 @@ $(function () {
     });
 });
 
+var STATUS_FRIEND = 1;
+var STATUS_REQUEST_SEND = 2;
+var STATUS_REQUEST_RECEIVED = 3;
+var STATUS_UNRELATED = 4;
+
 function update_status_block(status) {
     var button = '';
 

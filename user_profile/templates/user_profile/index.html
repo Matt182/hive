@@ -13,15 +13,6 @@
         {% include "user_profile/_profile.html" with owner=owner profile=profile %}
     </div>
     <div class="col-12 border rounded">
-        <form action="{% url 'send_post' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="wall_owner_id" value="{{person.id}}">
-            <input type="hidden" name="author_id" value="{{user.id}}">
-            <input type="text" name="message">
-            <input type="submit" value="Send">
-        </form>
-    </div>
-    <div class="border rounded">
         {% include "user_profile/_posts.html" with posts=posts user=user %}
     </div>
 </div>

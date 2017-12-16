@@ -9,7 +9,9 @@ HTTP_OK = 200
 
 
 class UserProfileTestCase(TestCase):
-    get_user_url = reverse('profile')
+    def get_user_url(self, x):
+        return reverse('profile', kwargs={'person_id': x})
+
     get_login_url = reverse('index')
     get_logout_url = reverse('logout')
     registration_url = reverse('registration')
@@ -21,7 +23,7 @@ class UserProfileTestCase(TestCase):
         self.c = Client()
 
     def test_login(self):
-        response = self.c.get(self.get_user_url)
+        response = self.c.get(self.get_user_url(0))
         self.assertEqual(response.status_code, HTTP_REDIRECT)
         response = self.c.get(self.get_login_url)
         self.assertEqual(response.status_code, HTTP_OK)
@@ -30,7 +32,7 @@ class UserProfileTestCase(TestCase):
             'password': 'jeffpass',
         })
         self.assertEqual(response.status_code, HTTP_REDIRECT)
-        response = self.c.get(self.get_user_url)
+        response = self.c.get(self.get_user_url(1))
         self.assertEqual(response.status_code, HTTP_OK)
         response = self.c.get(self.get_login_url)
         self.assertEqual(response.status_code, HTTP_REDIRECT)
@@ -45,7 +47,7 @@ class UserProfileTestCase(TestCase):
         response = self.c.get(self.get_logout_url)
         response = self.c.get(self.get_login_url)
         self.assertEqual(response.status_code, HTTP_OK)
-        response = self.c.get(self.get_user_url)
+        response = self.c.get(self.get_user_url(0))
         self.assertEqual(response.status_code, HTTP_REDIRECT)
 
     def test_registration(self):
@@ -53,7 +55,7 @@ class UserProfileTestCase(TestCase):
         new_user_email = 'new_user@email.com'
         new_user_password = 'pass_123_pass'
 
-        response = self.c.get(self.get_user_url)
+        response = self.c.get(self.get_user_url(0))
         self.assertEqual(response.status_code, HTTP_REDIRECT)
         response = self.c.get(self.registration_url)
         self.assertEqual(response.status_code, HTTP_OK)
@@ -64,7 +66,7 @@ class UserProfileTestCase(TestCase):
             'password2': new_user_password,
         })
         self.assertEqual(response.status_code, HTTP_REDIRECT)
-        response = self.c.get(self.get_user_url)
+        response = self.c.get(self.get_user_url(7))
         self.assertEqual(response.status_code, HTTP_OK)
         registered = User.objects.get(username=new_username)
         self.assertIsNotNone(registered)

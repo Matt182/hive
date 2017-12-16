@@ -7,10 +7,12 @@ const extractSass = new ExtractTextPlugin({
 });
 
 export default {
-   entry:  './static_source/app.js',
+   entry:  {
+       friend: './static_source/friend.js'
+   },
    output:  {
        path: path.resolve(__dirname, 'public/js'),
-       filename: 'app.js'
+       filename: '[name].entry.js'
    },
    module: {
        rules: [

@@ -22,45 +22,35 @@ def get_current_user(request):
     return request.user
 
 
-@login_required
-def index(request):
-    user = get_current_user(request)
-    try:
-        profile = user.profile
-    except:
-        profile = None
-    posts = get_posts(user.id)
-    print(posts)
-
-    return render(request, 'user_profile/index.html', {
-        'user': user,
-        'person': user,
-        'owner': True,
-        'profile': profile,
-        'posts': posts,
-    })
-
-
-@login_required
-def person(request, person_id):
-    user = get_current_user(request)
-    if user.id == int(person_id):
-        return redirect('profile')
-    person = get_object_or_404(User, pk=person_id)
+def get_profile(person):
     try:
         profile = person.profile
     except:
         profile = None
-    status = get_relation_to(user.id, person_id)
-    posts = Post.objects.filter(owner_id=person.id).order_by('-created_at')
+    return profile
+
+
+@login_required
+def index(request, person_id):
+    user = get_current_user(request)
+    if person_id == user.id:
+        person = user
+        status = ''
+        owner = True
+    else:
+        person = get_object_or_404(User, pk=person_id)
+        status = get_relation_to(user.id, person_id)
+        owner = False
+    profile = get_profile(person)
+    posts = get_posts(person_id)
 
     return render(request, 'user_profile/index.html', {
         'user': user,
         'person': person,
-        'owner': False,
+        'owner': owner,
         'status': status,
         'profile': profile,
-        'posts': posts
+        'posts': posts,
     })
 
 
@@ -68,7 +58,7 @@ def person(request, person_id):
 def friends(request):
     user = get_current_user(request)
     user_friends = get_friends(user.id)
-    print(user_friends)
+
     return render(request, 'user_profile/friends.html', {
         'user': user,
         'friends': user_friends,
@@ -186,6 +176,7 @@ def send_post(request):
     msg = request.POST['message']
     post = create_post(owner_id, user.id, msg)
     data = serializers.serialize('json', [post], fields=('owner_id', 'author_id', 'created_at'))
+
     return JsonResponse({
         'result': 'success',
         'post': data,
