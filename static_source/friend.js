@@ -4,8 +4,25 @@ window.Popper = require('popper.js') // required for tooltip, popup...
 require('bootstrap')
 
 import './index.scss' // include bootstrap css file with own modifications
-import { setup_ajax_csrf } from './helpers'
+//import { setup_ajax_csrf } from './helpers'
 import Cookies from 'js-cookie'
+
+
+const setup_ajax_csrf = () => {
+  const csrftoken = Cookies.get('csrftoken');
+
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+}
 
 // tooltip and popover require javascript side modification to enable them (new in Bootstrap 4)
 // use tooltip and popover components everywhere
@@ -48,18 +65,35 @@ $(function (){
    })
 
    $('#action-send').click(function () {
-       $.post('/user/send_friend_request/', {
-           person_id: person_id,
-       }, function(data) {
-           update_status_block(data.status)
-       })
+       const params = new URLSearchParams()
+       params.set('person_id', person_id)
+       fetch('/user/send_friend_request/', {
+           method: 'post',
+           credentials: "same-origin",
+           headers: {
+               "X-CSRFToken": Cookies.get('csrftoken'),
+               'X-Requested-With': 'XMLHttpRequest',
+               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+               'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+           },
+           body: params
+       }).then((resp) => {
+           return resp.json()
+       }).then((resp) => {
+           if (resp.result == 'success') {
+               update_status_block(resp.status)
+           }
+           console.log("Error", resp);
+       }).catch(function(ex) {
+           console.log("parsing failed", ex);
+       });
+//       $.post('/user/send_friend_request/', {
+//           person_id: person_id,
+//       }, function(data) {
+//           update_status_block(data.status)
+//       })
    })
 })
-
-const STATUS_FRIEND = 1;
-const STATUS_REQUEST_SEND = 2;
-const STATUS_REQUEST_RECEIVED = 3;
-const STATUS_UNRELATED = 4;
 
 function update_status_block(status) {
    let button = ''

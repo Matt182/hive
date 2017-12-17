@@ -12788,6 +12788,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 window.$ = window.jQuery = __webpack_require__(0); // required for bootstrap
 window.Popper = __webpack_require__(1); // required for tooltip, popup...
 __webpack_require__(6); // include bootstrap css file with own modifications
+//import { setup_ajax_csrf } from './helpers'
+
+
+var setup_ajax_csrf = function setup_ajax_csrf() {
+    var csrftoken = _jsCookie2.default.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method)
+        );
+    }
+    $.ajaxSetup({
+        beforeSend: function beforeSend(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+};
 
 // tooltip and popover require javascript side modification to enable them (new in Bootstrap 4)
 // use tooltip and popover components everywhere
@@ -12830,18 +12849,35 @@ $(function () {
     });
 
     $('#action-send').click(function () {
-        $.post('/user/send_friend_request/', {
-            person_id: person_id
-        }, function (data) {
-            update_status_block(data.status);
+        var params = new URLSearchParams();
+        params.set('person_id', person_id);
+        fetch('/user/send_friend_request/', {
+            method: 'post',
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": _jsCookie2.default.get('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Accept': 'application/json, application/xml, text/plain, text/html, *.*'
+            },
+            body: params
+        }).then(function (resp) {
+            return resp.json();
+        }).then(function (resp) {
+            if (resp.result == 'success') {
+                update_status_block(resp.status);
+            }
+            console.log("Error", resp);
+        }).catch(function (ex) {
+            console.log("parsing failed", ex);
         });
+        //       $.post('/user/send_friend_request/', {
+        //           person_id: person_id,
+        //       }, function(data) {
+        //           update_status_block(data.status)
+        //       })
     });
 });
-
-var STATUS_FRIEND = 1;
-var STATUS_REQUEST_SEND = 2;
-var STATUS_REQUEST_RECEIVED = 3;
-var STATUS_UNRELATED = 4;
 
 function update_status_block(status) {
     var button = '';
@@ -12861,23 +12897,6 @@ function update_status_block(status) {
             break;
     }
     $('#status-block').empty().html(button);
-}
-
-function setup_ajax_csrf() {
-    var csrftoken = _jsCookie2.default.get('csrftoken');
-
-    function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method)
-        );
-    }
-    $.ajaxSetup({
-        beforeSend: function beforeSend(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
 }
 
 console.log('Hello World');
