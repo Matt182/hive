@@ -8,7 +8,8 @@ const extractSass = new ExtractTextPlugin({
 
 export default {
    entry:  {
-       friend: './static_source/friend.js'
+       friend: './static_source/friend.js',
+       post_and_comm: './static_source/post_and_comment.js'
    },
    output:  {
        path: path.resolve(__dirname, 'public/js'),

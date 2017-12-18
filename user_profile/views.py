@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 
 from user_profile.forms import ProfileForm, create_populated_profile_form
@@ -15,7 +15,7 @@ from user_profile.helpers.friend_helpers import \
     decline_friend_request as decline_request, \
     delete_friend as delete_f
 from user_profile.helpers.post_helpers import create_post, get_posts
-from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED, Post
+from user_profile.models import REQUEST_SEND, FRIEND, UNRELATED
 
 
 def get_current_user(request):
@@ -175,11 +175,19 @@ def send_post(request):
     owner_id = request.POST['wall_owner_id']
     msg = request.POST['message']
     post = create_post(owner_id, user.id, msg)
-    data = serializers.serialize('json', [post], fields=('owner_id', 'author_id', 'created_at'))
+    html = render_to_string('user_profile/_post.html', {
+        'user': user,
+        'post': post,
+    })
+    comment = render_to_string('user_profile/_comments.html', {
+        'user': user,
+        'post': post,
+        'comments': [],
+    }, request=request)
 
     return JsonResponse({
         'result': 'success',
-        'post': data,
+        'post': html + comment,
     })
 
 

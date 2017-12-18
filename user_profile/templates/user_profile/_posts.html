@@ -1,18 +1,16 @@
 <div class="col-12 border rounded">
-    <form action="{% url 'send_post' %}" method="post">
+    <form action="{% url 'send_post' %}" method="post" id="post_submit_form">
         {% csrf_token %}
         <input type="hidden" name="wall_owner_id" value="{{person.id}}">
         <input type="hidden" name="author_id" value="{{user.id}}">
         <input type="text" name="message">
-        <input type="submit" value="Send">
+        <input type="submit" value="Send" id="post_submit_btn" class="btn btn-primary">
     </form>
 </div>
 
-{% for post in posts %}
-    <div class="border rounded">
-        <p>sender {{post.post.author.username}}</p>
-        <p>message {{post.post.message}}</p>
-        <p>created {{post.post.created_at}}</p>
-    </div>
-    {% include "user_profile/_comments.html" with post=post user=user%}
-{% endfor %}
+<div id="post_block">
+    {% for post in posts %}
+        {% include "user_profile/_post.html" with post=post.post %}
+        {% include "user_profile/_comments.html" with post=post.post user=user comments=post.comments %}
+    {% endfor %}
+</div>

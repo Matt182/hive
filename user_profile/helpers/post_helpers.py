@@ -12,7 +12,7 @@ def get_posts(user_id):
     data = []
     for post in posts:
         data.append({
-            'post':post,
+            'post': post,
             'comments': Comment.objects.filter(post_id=post.id)
         })
     return data
