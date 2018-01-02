@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import transaction
 
-from user_profile.models import Friends, FriendRequest, FRIEND, REQUEST_SEND, UNRELATED, REQUEST_RECEIVED
+from user_profile.models import Friends, FriendRequest, FRIEND, REQUEST_SEND, UNRELATED, REQUEST_RECEIVED, ChatRoom
 
 
 def get_friends(user_id):
@@ -52,8 +52,9 @@ def send_friend_request(user_id, person_id):
 def accept_friend_request(user_id, person_id):
     req = FriendRequest.objects.get(sender_id=person_id, receiver_id=user_id)
     req.delete()
-    Friends(user_id=user_id, friend_id=person_id).save()
-    Friends(user_id=person_id, friend_id=user_id).save()
+    chat_room = ChatRoom(type=ChatRoom.TYPE_PAIR).save()
+    Friends(user_id=user_id, friend_id=person_id, chat_room_id=chat_room.id).save()
+    Friends(user_id=person_id, friend_id=user_id, chat_room_id=chat_room.id).save()
 
 
 def decline_friend_request(user_id, person_id):
@@ -64,6 +65,9 @@ def decline_friend_request(user_id, person_id):
 @transaction.atomic
 def delete_friend(user_id, person_id):
     friendship = Friends.objects.get(user_id=user_id, friend_id=person_id)
+    chat_room_id = friendship.chat_room.id
     friendship.delete()
     friendship = Friends.objects.get(user_id=person_id, friend_id=user_id)
     friendship.delete()
+    chat_room = ChatRoom.objects.get(id=chat_room_id)
+    chat_room.delete()

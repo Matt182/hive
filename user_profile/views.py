@@ -33,7 +33,7 @@ def get_profile(person):
 @login_required
 def index(request, person_id):
     user = get_current_user(request)
-    if person_id == user.id:
+    if int(person_id) == user.id:
         person = user
         status = ''
         owner = True

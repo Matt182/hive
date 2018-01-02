@@ -6,6 +6,7 @@
     <div class="col-4">
         {% include "user_profile/_avatar.html" with profile=profile%}
         {% if not owner %}
+            {{person.username}}
             {% include "user_profile/_friend_status.html" with status=status person=person %}
         {% endif %}
     </div>

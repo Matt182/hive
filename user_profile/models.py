@@ -12,6 +12,10 @@ GENDER_MALE = 'male'
 GENDER_FEMALE = 'female'
 
 
+def get_deleted_user():
+    return User.objects.get_or_create(username='deleted')[0]
+
+
 def user_directory_path(instance, filename):
     return 'user_{}/avatar_{}'.format(instance.user.id, filename)
 
@@ -30,12 +34,32 @@ class Profile(Model):
     birth_date = models.DateField()
 
 
+class ChatRoom(Model):
+    TYPE_GROUP = 'group'
+    TYPE_PAIR = 'pair'
+
+    STATUS_READ = 'read'
+    STATUS_UNREAD = 'unread'
+    STATUS_NEW_MSG = 'new_msg'
+
+    last_message_id = models.IntegerField(default=0)
+    type = models.CharField(max_length=10, default=TYPE_PAIR)
+    status = models.CharField(max_length=10, default=STATUS_READ)
+
+    def __repr__(self):
+        return "|chat_room_id: {}|".format(self.pk)
+
+    def __str__(self):
+        return self.__repr__()
+
+
 class Friends(Model):
     user_id = models.IntegerField()
     friend = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
+    chat_room = models.ForeignKey(ChatRoom, null=True)
 
     def __repr__(self):
         return "|user_id: {}, friend_id: {}|".format(self.user_id, self.friend_id)
@@ -55,8 +79,17 @@ class FriendRequest(Model):
         return self.__repr__()
 
 
-def get_deleted_user():
-    return User.objects.get_or_create(username='deleted')[0]
+class Message(Model):
+    message = models.TextField()
+    chat_room = models.ForeignKey(
+        ChatRoom,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET(get_deleted_user),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Post(Model):
