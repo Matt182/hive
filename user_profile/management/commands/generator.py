@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 from faker import Faker
 
-from user_profile.models import Profile, Friends, FriendRequest, Post, Comment, ChatRoom, Message
+from user_profile.helpers.friend_helpers import make_friends
+from user_profile.models import Profile, Friends, FriendRequest, Post, Comment, ChatRoom, Message, UserToChatRoom
 
 
 class Command(BaseCommand):
@@ -38,10 +39,7 @@ def generate():
 
     # making friends
     for friend_id in range(2, 4):
-        chat_room = ChatRoom(type=ChatRoom.TYPE_PAIR)
-        chat_room.save()
-        Friends(user_id=1, friend_id=friend_id, chat_room=chat_room).save()
-        Friends(user_id=friend_id, friend_id=1, chat_room=chat_room).save()
+        make_friends(1, friend_id)
 
 
 def clear():
@@ -51,6 +49,7 @@ def clear():
     FriendRequest.objects.all().delete()
     Post.objects.all().delete()
     Comment.objects.all().delete()
+    UserToChatRoom.objects.all().delete()
     ChatRoom.objects.all().delete()
     Message.objects.all().delete()
     print('db cleared')

@@ -53,13 +53,23 @@ class ChatRoom(Model):
         return self.__repr__()
 
 
+class UserToChatRoom(Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    chat_room = models.ForeignKey(
+        ChatRoom,
+        on_delete=models.CASCADE,
+    )
+
+
 class Friends(Model):
     user_id = models.IntegerField()
     friend = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
-    chat_room = models.ForeignKey(ChatRoom, null=True)
 
     def __repr__(self):
         return "|user_id: {}, friend_id: {}|".format(self.user_id, self.friend_id)
