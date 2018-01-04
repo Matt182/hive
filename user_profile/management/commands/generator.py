@@ -3,7 +3,8 @@ from django.core.management import BaseCommand
 from faker import Faker
 
 from user_profile.helpers.friend_helpers import make_friends
-from user_profile.models import Profile, Friends, FriendRequest, Post, Comment, ChatRoom, Message, UserToChatRoom
+from user_profile.models import Profile, Friends, FriendRequest, Post, Comment, ChatRoom, Message, UserToChatRoom, \
+    UserToPairChatRoom
 
 
 class Command(BaseCommand):
@@ -50,6 +51,7 @@ def clear():
     Post.objects.all().delete()
     Comment.objects.all().delete()
     UserToChatRoom.objects.all().delete()
+    UserToPairChatRoom.objects.all().delete()
     ChatRoom.objects.all().delete()
     Message.objects.all().delete()
     print('db cleared')

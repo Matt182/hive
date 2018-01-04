@@ -35,22 +35,34 @@ class Profile(Model):
 
 
 class ChatRoom(Model):
-    TYPE_GROUP = 'group'
     TYPE_PAIR = 'pair'
-
-    STATUS_READ = 'read'
-    STATUS_UNREAD = 'unread'
-    STATUS_NEW_MSG = 'new_msg'
+    TYPE_GROUP = 'group'
 
     last_message_id = models.IntegerField(default=0)
-    type = models.CharField(max_length=10, default=TYPE_PAIR)
-    status = models.CharField(max_length=10, default=STATUS_READ)
+    type = models.CharField(max_length=15)
 
     def __repr__(self):
         return "|chat_room_id: {}|".format(self.pk)
 
     def __str__(self):
         return self.__repr__()
+
+
+class UserToPairChatRoom(Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='%(class)s_user_id'
+    )
+    pair = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='%(class)s_pair_id'
+    )
+    chat_room = models.ForeignKey(
+        ChatRoom,
+        on_delete=models.CASCADE,
+    )
 
 
 class UserToChatRoom(Model):
