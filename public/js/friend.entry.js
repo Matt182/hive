@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10548,6 +10548,88 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+__webpack_require__(4);
+
+var _helpers = __webpack_require__(1);
+
+// Bootstrap dependencies
+window.$ = window.jQuery = __webpack_require__(0); // required for bootstrap
+window.Popper = __webpack_require__(5); // required for tooltip, popup...
+__webpack_require__(7); // include bootstrap css file with own modifications
+
+
+$(function () {
+    $(document).on("click", "#action-unfriend", function () {
+        var params = new URLSearchParams();
+        params.set('person_id', person_id);
+        (0, _helpers.ajax_post)('/user/delete_friend/', params, friend_action_cb);
+    });
+
+    $(document).on("click", "#action-decline-send", function () {
+        var params = new URLSearchParams();
+        params.set('person_id', person_id);
+        (0, _helpers.ajax_post)('/user/decline_send_friend_request/', params, friend_action_cb);
+    });
+
+    $(document).on("click", "#action-accept", function () {
+        var params = new URLSearchParams();
+        params.set('person_id', person_id);
+        (0, _helpers.ajax_post)('/user/accept_friend_request/', params, friend_action_cb);
+    });
+
+    $(document).on("click", "#action-decline-received", function () {
+        var params = new URLSearchParams();
+        params.set('person_id', person_id);
+        (0, _helpers.ajax_post)('/user/decline_received_friend_request/', params, friend_action_cb);
+    });
+
+    $(document).on("click", "#action-send", function () {
+        var params = new URLSearchParams();
+        params.set('person_id', person_id);
+        (0, _helpers.ajax_post)('/user/send_friend_request/', params, friend_action_cb);
+    });
+});
+
+var friend_action_cb = function friend_action_cb(req) {
+    update_status_block(req.status);
+};
+
+var update_status_block = function update_status_block(status) {
+    var button = '';
+
+    switch (status) {
+        case STATUS_FRIEND:
+            button = '<div>Send <button id="action-unfriend">Unfriend<button/><div/>';
+            break;
+        case STATUS_REQUEST_SEND:
+            button = '<div>Send <button id="action-decline-send">Decline<button/><div/>';
+            break;
+        case STATUS_REQUEST_RECEIVED:
+            button = '<div>Received <button id="action-accept">Accept<button/> <button id="action-decline-received">Decline<button/><div/>';
+            break;
+        case STATUS_UNRELATED:
+            button = '<div><button id="action-send">Send request<button/><div/>';
+            break;
+    }
+    $('#status-block').empty().html(button);
+};
+
+console.log('Hello World');
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12993,88 +13075,6 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {
-
-__webpack_require__(5);
-
-var _helpers = __webpack_require__(1);
-
-// Bootstrap dependencies
-window.$ = window.jQuery = __webpack_require__(0); // required for bootstrap
-window.Popper = __webpack_require__(3); // required for tooltip, popup...
-__webpack_require__(7); // include bootstrap css file with own modifications
-
-
-$(function () {
-    $(document).on("click", "#action-unfriend", function () {
-        var params = new URLSearchParams();
-        params.set('person_id', person_id);
-        (0, _helpers.ajax_post)('/user/delete_friend/', params, friend_action_cb);
-    });
-
-    $(document).on("click", "#action-decline-send", function () {
-        var params = new URLSearchParams();
-        params.set('person_id', person_id);
-        (0, _helpers.ajax_post)('/user/decline_send_friend_request/', params, friend_action_cb);
-    });
-
-    $(document).on("click", "#action-accept", function () {
-        var params = new URLSearchParams();
-        params.set('person_id', person_id);
-        (0, _helpers.ajax_post)('/user/accept_friend_request/', params, friend_action_cb);
-    });
-
-    $(document).on("click", "#action-decline-received", function () {
-        var params = new URLSearchParams();
-        params.set('person_id', person_id);
-        (0, _helpers.ajax_post)('/user/decline_received_friend_request/', params, friend_action_cb);
-    });
-
-    $(document).on("click", "#action-send", function () {
-        var params = new URLSearchParams();
-        params.set('person_id', person_id);
-        (0, _helpers.ajax_post)('/user/send_friend_request/', params, friend_action_cb);
-    });
-});
-
-var friend_action_cb = function friend_action_cb(req) {
-    update_status_block(req.status);
-};
-
-var update_status_block = function update_status_block(status) {
-    var button = '';
-
-    switch (status) {
-        case STATUS_FRIEND:
-            button = '<div>Send <button id="action-unfriend">Unfriend<button/><div/>';
-            break;
-        case STATUS_REQUEST_SEND:
-            button = '<div>Send <button id="action-decline-send">Decline<button/><div/>';
-            break;
-        case STATUS_REQUEST_RECEIVED:
-            button = '<div>Received <button id="action-accept">Accept<button/> <button id="action-decline-received">Decline<button/><div/>';
-            break;
-        case STATUS_UNRELATED:
-            button = '<div><button id="action-send">Send request<button/><div/>';
-            break;
-    }
-    $('#status-block').empty().html(button);
-};
-
-console.log('Hello World');
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
@@ -13105,7 +13105,7 @@ module.exports = g;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery, Popper) {/*!
+/* WEBPACK VAR INJECTION */(function(jQuery) {/*!
  * Bootstrap v4.0.0-beta (https://getbootstrap.com)
  * Copyright 2011-2017 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -16936,7 +16936,7 @@ var Popover = function ($) {
 
 
 })();
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(3)["default"]))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ })
 /******/ ]);

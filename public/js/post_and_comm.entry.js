@@ -10565,9 +10565,6 @@ window.$ = window.jQuery = __webpack_require__(0);
 $('#post_submit_form').on('submit', function (e) {
     e.preventDefault();
     var form = e.currentTarget;
-    console.log("form submitted!"); // sanity check
-    console.log(form);
-    console.log($(form));
     var url = $(form).attr("action");
     var form_data = new FormData(form);
     (0, _helpers.ajax_post)(url, form_data, function (req) {
@@ -10575,9 +10572,23 @@ $('#post_submit_form').on('submit', function (e) {
     }, false);
 });
 
+$('.comment_submit_form').on('submit', function (e) {
+    e.preventDefault();
+    var form = e.currentTarget;
+    var url = $(form).attr("action");
+    var form_data = new FormData(form);
+    (0, _helpers.ajax_post)(url, form_data, function (req) {
+        append_comment(req.comment);
+    }, false);
+});
+
 var append_post = function append_post(post_data) {
     var posts = $('#post_block').html();
     $('#post_block').empty().append(post_data).append(posts);
+};
+
+var append_comment = function append_comment(comment_data) {
+    var post_comments = '';
 };
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 

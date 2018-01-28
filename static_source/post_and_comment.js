@@ -11,9 +11,23 @@ $('#post_submit_form').on('submit', (e) => {
     }, false);
 });
 
+$('.comment_submit_form').on('submit', (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const url = $(form).attr("action");
+    const form_data = new FormData(form);
+    ajax_post(url, form_data, (req) => {
+        append_comment(req.comment);
+    }, false);
+});
+
 const append_post = (post_data) => {
     const posts = $('#post_block').html();
     $('#post_block').empty()
         .append(post_data)
         .append(posts);
+}
+
+const append_comment = (comment_data) => {
+    const post_comments = ''
 }

@@ -27,11 +27,11 @@ class Profile(Model):
         primary_key=True,
     )
     avatar = models.FileField(upload_to=user_directory_path)
-    bio = models.TextField()
-    gender = models.CharField(max_length=20)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    birth_date = models.DateField()
+    bio = models.TextField(blank=True, null=True)
+    gender = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    birth_date = models.DateField(blank=True, null=True)
 
 
 class ChatRoom(Model):

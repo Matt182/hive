@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from user_profile.forms import ProfileForm, create_populated_profile_form
@@ -153,7 +154,7 @@ def add_profile_info(request):
 
         if form.is_valid():
             form.save()
-            return redirect('profile')
+            return redirect('/user/{}/'.format(user.id))
         else:
             return render(request, 'user_profile/profile_info_form.html', {
                 'user': user,
@@ -198,9 +199,11 @@ def leave_comment(request):
     post_id = request.POST['post_id']
     msg = request.POST['message']
     comment = create_comment(post_id, user.id, msg)
-    data = comment.to_json()
-
+    html = render_to_string('user_profile/_comment.html', {
+        'user': user,
+        'comment': comment,
+    })
     return JsonResponse({
         'result': 'success',
-        'comment': data,
+        'comment': html,
     })
