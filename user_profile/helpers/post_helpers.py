@@ -8,13 +8,14 @@ def create_post(owner_id, author_id, msg):
 
 
 def get_posts(user_id):
-    comments = Comment.objects.all().select_related('post')
-    print(comments)
     posts = Post.objects.filter(owner_id=user_id).order_by('-created_at')
+    posts_id = list(map(lambda p: p.id, posts))
+    comments = Comment.objects.filter(post_id__in=posts_id)
     data = []
     for post in posts:
         data.append({
             'post': post,
-            'comments': Comment.objects.filter(post_id=post.id).select_related('author')
+            'comments': list(filter(lambda comment: comment.post_id == post.id, comments))
         })
+    print(data)
     return data
