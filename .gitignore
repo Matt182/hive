@@ -6,5 +6,5 @@ start_server
 venv
 staticfiles
 .env
-public/media/*
+public/*
 !public/media/system

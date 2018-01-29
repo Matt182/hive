@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10551,20 +10551,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /* 4 */,
 /* 5 */,
 /* 6 */,
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {
+/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery, $) {
 
 var _helpers = __webpack_require__(1);
 
-window.$ = window.jQuery = __webpack_require__(0);
+window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(0);
 
 $('#post_submit_form').on('submit', function (e) {
     e.preventDefault();
     var form = e.currentTarget;
+    console.log($(form));
     var url = $(form).attr("action");
     var form_data = new FormData(form);
     (0, _helpers.ajax_post)(url, form_data, function (req) {
@@ -10578,7 +10578,7 @@ $('.comment_submit_form').on('submit', function (e) {
     var url = $(form).attr("action");
     var form_data = new FormData(form);
     (0, _helpers.ajax_post)(url, form_data, function (req) {
-        append_comment(req.comment);
+        append_comment(req.comment, req.post_id);
     }, false);
 });
 
@@ -10587,10 +10587,11 @@ var append_post = function append_post(post_data) {
     $('#post_block').empty().append(post_data).append(posts);
 };
 
-var append_comment = function append_comment(comment_data) {
-    var post_comments = '';
+var append_comment = function append_comment(comment_data, post_id) {
+    console.log('#post_comments_' + post_id);
+    $('#post_comments_' + post_id).append(comment_data);
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(0)))
 
 /***/ })
 /******/ ]);

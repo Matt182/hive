@@ -179,16 +179,12 @@ def send_post(request):
     html = render_to_string('user_profile/_post.html', {
         'user': user,
         'post': post,
-    })
-    comment = render_to_string('user_profile/_comments.html', {
-        'user': user,
-        'post': post,
-        'comments': [],
+        'comments': []
     }, request=request)
 
     return JsonResponse({
         'result': 'success',
-        'post': html + comment,
+        'post': html,
     })
 
 
@@ -206,4 +202,5 @@ def leave_comment(request):
     return JsonResponse({
         'result': 'success',
         'comment': html,
+        'post_id': post_id,
     })

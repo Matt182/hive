@@ -6,24 +6,17 @@
     const STATUS_REQUEST_RECEIVED = 3
     const STATUS_UNRELATED = 4
 </script>
-<div id="status-block">
-    {% if status == 1 %}
-        <div>
+<div id="status-block row">
+    <div class="col-12">
+        {% if status == 1 %}
             Your friend <button id="action-unfriend">Unfriend</button>
-        </div>
-    {% elif status == 2 %}
-        <div>
+        {% elif status == 2 %}
             Send <button id="action-decline-send">Decline</button>
-        </div>
-    {% elif status == 3 %}
-        <div>
+        {% elif status == 3 %}
             Received <button id="action-accept">Accept</button>
             <button id="action-decline-received">Decline</button>
-        </div>
-    {% else %}
-        <div>
+        {% else %}
             <button id="action-send">Send request</button>
-        </div>
-    {% endif%}
-
+        {% endif%}
+    </div>
 </div>
