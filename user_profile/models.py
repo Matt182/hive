@@ -111,6 +111,7 @@ class Message(Model):
         User,
         on_delete=models.SET(get_deleted_user),
     )
+    status = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
