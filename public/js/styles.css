@@ -5551,3 +5551,30 @@ a.text-dark:focus, a.text-dark:hover {
 
 .invisible {
   visibility: hidden !important; }
+
+body {
+  background-color: #2b2458; }
+
+.navbar {
+  background-color: white;
+  border-radius: 0px 0px 5px 5px;
+  margin-bottom: 10px; }
+
+.avatar {
+  padding: 10px; }
+
+.block {
+  background-color: white;
+  border-radius: 5px;
+  margin-bottom: 10px; }
+
+.post {
+  padding: 10px;
+  margin-bottom: 10px; }
+
+.comment {
+  margin-bottom: 10px;
+  padding: 10px; }
+
+.comment_submit_form {
+  margin-bottom: 10px; }
