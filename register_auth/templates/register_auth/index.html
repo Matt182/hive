@@ -2,11 +2,26 @@
 
 {% block content %}
 
-<form action="{% url 'index' %}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Log in">
-</form>
-<a href="{% url 'registration' %}">Registration</a>
+<div class="row">
+    <div class="col-12 block mt-5 p-5">
+        <form action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    <input class="form-control" name="{{ field.name }}">
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Log in" class="btn btn-primary">
+        </form>
+        <div class="mt-4">
+            <a href="{% url 'registration' %}">Registration</a>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

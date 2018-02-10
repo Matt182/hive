@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <div id="content">
+    <div class="container">
         {% block content %}
         {% endblock %}
     </div>
