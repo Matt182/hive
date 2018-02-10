@@ -17,5 +17,4 @@ def get_posts(user_id):
             'post': post,
             'comments': list(filter(lambda comment: comment.post_id == post.id, comments))
         })
-    print(data)
     return data

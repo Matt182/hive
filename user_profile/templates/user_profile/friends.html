@@ -1,9 +1,9 @@
 {% extends "user_profile/base/base.html" %}
 
 {% block content %}
-<h1>Friends</h1>
 
-<div>
+<div class="row block p-3">
+    <h1>Friends</h1>
     {% for friend in friends %}
         {% include "user_profile/_friend.html" with friend=friend %}
     {% endfor %}
